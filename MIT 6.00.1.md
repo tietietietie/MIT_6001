@@ -6,5 +6,7 @@
 * calculation/remember results(**what can computer do**)
 * our own methods of  computation
 * Limited computation and storage
-* 
+* **We need algorithms!**
+
+
 
