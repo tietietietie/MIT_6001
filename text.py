@@ -9,8 +9,8 @@
 test functions as arguments
 '''
 def func_a():
-    print 'inside func_a'
+    print ('inside func_a')
 def func_c(z):
-    print 'inside func_c'
+    print ('inside func_c')
     return z()
-print func_c(func_a) 
+print (func_c(func_a)) 
