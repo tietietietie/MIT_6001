@@ -71,6 +71,30 @@ def get_available_letters(letters_guessed):
         alllowercase_list.remove(letter)
     available_letters = "".join(alllowercase_list)
     return available_letters
-secret_word = 'apple'
-letters_guessed = ['e','i','k','p','r','s']
-print(get_available_letters(letters_guessed))
+def match_with_gaps(my_word, other_word):
+    '''
+    my_word: string with _ characters, current guess of secret word
+    other_word: string, regular English word
+    returns: boolean, True if all the actual letters of my_word match the 
+        corresponding letters of other_word, or the letter is the special symbol
+        _ , and my_word and other_word are of the same length;
+        False otherwise: 
+    '''
+    # FILL IN YOUR CODE HERE AND DELETE "pass"
+    flag = True
+    unguessed_letters = []
+    my_word = my_word.replace(' ','')
+    if len(my_word) == len(other_word):
+      for i in range(len(my_word)):
+        if (my_word[i] in string.ascii_letters) and (my_word[i] != other_word[i] or my_word[i] in unguessed_letters):
+          flag = False
+          break
+        elif my_word[i] not in string.ascii_letters:
+          unguessed_letters.append(other_word[i])
+    else:
+      flag = False
+    return flag
+match_with_gaps("a_ _ _ _","apple")
+# secret_word = 'apple'
+# letters_guessed = ['e','i','k','p','r','s']
+# print(get_available_letters(letters_guessed))
