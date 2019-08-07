@@ -91,8 +91,21 @@ def get_word_score(word, n):
     n: int >= 0
     returns: int >= 0
     """
-    
-    pass  # TO DO... Remove this line when you implement this function
+    word = word.lower()
+    word_length = len(word)
+    score_word =0
+    def sumpoints_word(word):
+        sumpoints = 0
+        for letter in word:
+            sumpoints += SCRABBLE_LETTER_VALUES[letter]
+        return sumpoints
+    if (7*word_length-3*(n-word_length)) < 1:
+        score_word = sumpoints_word(word) * 1
+    else:
+        score_word = sumpoints_word(word) * (7*word_length-3*(n-word_length))
+    return score_word
+
+
 
 #
 # Make sure you understand how this function works and what it does!
