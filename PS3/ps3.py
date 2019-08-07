@@ -16,7 +16,7 @@ CONSONANTS = 'bcdfghjklmnpqrstvwxyz'
 HAND_SIZE = 7
 
 SCRABBLE_LETTER_VALUES = {
-    'a': 1, 'b': 3, 'c': 3, 'd': 2, 'e': 1, 'f': 4, 'g': 2, 'h': 4, 'i': 1, 'j': 8, 'k': 5, 'l': 1, 'm': 3, 'n': 1, 'o': 1, 'p': 3, 'q': 10, 'r': 1, 's': 1, 't': 1, 'u': 1, 'v': 4, 'w': 4, 'x': 8, 'y': 4, 'z': 10
+'*':0, 'a': 1, 'b': 3, 'c': 3, 'd': 2, 'e': 1, 'f': 4, 'g': 2, 'h': 4, 'i': 1, 'j': 8, 'k': 5, 'l': 1, 'm': 3, 'n': 1, 'o': 1, 'p': 3, 'q': 10, 'r': 1, 's': 1, 't': 1, 'u': 1, 'v': 4, 'w': 4, 'x': 8, 'y': 4, 'z': 10
 }
 
 # -----------------------------------
@@ -150,7 +150,10 @@ def deal_hand(n):
     num_vowels = int(math.ceil(n / 3))
 
     for i in range(num_vowels):
-        x = random.choice(VOWELS)
+        if i == 0:
+            x = '*'
+        else:
+            x = random.choice(VOWELS)
         hand[x] = hand.get(x, 0) + 1
     
     for i in range(num_vowels, n):    
@@ -201,17 +204,41 @@ def is_valid_word(word, hand, word_list):
     word_list: list of lowercase strings
     returns: boolean
     """
-
+    def possible_words(word):
+        i = word.find('*')
+        lword = list(word)
+        possible_words = []
+        for vowel in VOWELS:
+            lword[i] = vowel
+            possible_words.append(''.join(lword))
+        return possible_words
     tag = True
     word = word.lower()
     new_hand = hand.copy()
-    if word  not in word_list:
-        tag = False
-    for letter in word:
-        if letter not in new_hand.keys() or new_hand[letter] == 0:
+    if word.find('*') == -1:
+        if word not in word_list:
             tag = False
-        else:
-            new_hand[letter] -= 1
+        for letter in word:
+            if letter not in new_hand.keys() or new_hand[letter] == 0:
+                tag = False
+            else:
+                new_hand[letter] -= 1
+    else:
+        for vowel in VOWELS:
+            lword = list(word)
+            lword[word.find('*')] =vowel
+            possible_word = ''.join(lword) 
+            tag = True
+            if possible_word not in word_list:
+                tag = False
+            else:
+                for letter in word:
+                    if letter not in new_hand.keys() or new_hand[letter] == 0:
+                        tag = False
+                    else:
+                        new_hand[letter] -= 1
+            if tag == True:
+                break
     return tag
             
 
