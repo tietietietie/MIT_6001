@@ -94,7 +94,8 @@ def match_with_gaps(my_word, other_word):
     else:
       flag = False
     return flag
-match_with_gaps("a_ _ _ _","apple")
+# match_with_gaps("a_ _ _ _","apple")
 # secret_word = 'apple'
 # letters_guessed = ['e','i','k','p','r','s']
 # print(get_available_letters(letters_guessed))
+print(float('nan'))
