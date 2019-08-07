@@ -202,7 +202,19 @@ def is_valid_word(word, hand, word_list):
     returns: boolean
     """
 
-    pass  # TO DO... Remove this line when you implement this function
+    tag = True
+    word = word.lower()
+    new_hand = hand.copy()
+    if word  not in word_list:
+        tag = False
+    for letter in word:
+        if letter not in new_hand.keys() or new_hand[letter] == 0:
+            tag = False
+        else:
+            new_hand[letter] -= 1
+    return tag
+            
+
 
 #
 # Problem #5: Playing a hand
