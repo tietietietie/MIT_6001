@@ -249,12 +249,12 @@ def test_wildcard(word_list):
 
 
 word_list = load_words()
-print("----------------------------------------------------------------------")
-print("Testing get_word_score...")
-test_get_word_score()
 # print("----------------------------------------------------------------------")
-# print("Testing update_hand...")
-# test_update_hand()
+# print("Testing get_word_score...")
+# test_get_word_score()
+print("----------------------------------------------------------------------")
+print("Testing update_hand...")
+test_update_hand()
 # print("----------------------------------------------------------------------")
 # print("Testing is_valid_word...")
 # test_is_valid_word(word_list)
