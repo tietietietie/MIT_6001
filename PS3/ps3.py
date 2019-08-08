@@ -286,38 +286,29 @@ def play_hand(hand, word_list):
       returns: the total score for the hand
       
     """
-    
-    # BEGIN PSEUDOCODE <-- Remove this comment when you implement this function
-    # Keep track of the total score
-    
-    # As long as there are still letters left in the hand:
-    
-        # Display the hand
-        
-        # Ask user for input
-        
-        # If the input is two exclamation points:
-        
-            # End the game (break out of the loop)
 
-            
-        # Otherwise (the input is not two exclamation points):
+    total_score = 0
+    while (sum(hand.values()) > 0):
+        print('Current hand:',end=' ')
+        display_hand(hand)
+        word = input("Enter word, or \"!!\" to indicate that you are finished: ")
+        if word == "!!":
+            break
+        else:
+            if is_valid_word(word,hand,word_list):
+                socre = get_word_score(word,sum(hand.values()))
+                total_score += socre
+                print(word + " earned " + str(socre) + " points. "+'Total: '+ str(total_score))
+            else:
+                print('This is not a valid word. Please choose another word.')
+            hand = update_hand(hand,word)
+    if sum(hand.values()) == 0:
+        print("Run out of letters.",end = ' ')
+    print('Total score: ' + str(total_score) +' points.')
+    return None
 
-            # If the word is valid:
 
-                # Tell the user how many points the word earned,
-                # and the updated total score
 
-            # Otherwise (the word is not valid):
-                # Reject invalid word (print a message)
-                
-            # update the user's hand by removing the letters of their inputted word
-            
-
-    # Game is over (user entered '!!' or ran out of letters),
-    # so tell user the total score
-
-    # Return the total score as result of function
 
 
 
@@ -397,5 +388,6 @@ def play_game(word_list):
 # when the program is run directly, instead of through an import statement
 #
 if __name__ == '__main__':
+    hand = {'a':1, 'c':1, 'f':1, 'i':1, '*':1, 't':1, 'x':1}
     word_list = load_words()
-    play_game(word_list)
+    play_hand(hand,word_list)

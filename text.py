@@ -98,4 +98,7 @@ def match_with_gaps(my_word, other_word):
 # secret_word = 'apple'
 # letters_guessed = ['e','i','k','p','r','s']
 # print(get_available_letters(letters_guessed))
-print(float('nan'))
+# print(float('nan'))
+# a = [1,2,3]
+# print(sum(a))
+
