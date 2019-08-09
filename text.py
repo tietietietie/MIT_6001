@@ -102,3 +102,42 @@ def match_with_gaps(my_word, other_word):
 # a = [1,2,3]
 # print(sum(a))
 
+#----------------------------------
+# test function substitute_hand
+#----------------------------------
+import random
+def substitute_hand(hand, letter):
+    """ 
+    Allow the user to replace all copies of one letter in the hand (chosen by user)
+    with a new letter chosen from the VOWELS and CONSONANTS at random. The new letter
+    should be different from user's choice, and should not be any of the letters
+    already in the hand.
+
+    If user provide a letter not in the hand, the hand should be the same.
+
+    Has no side effects: does not mutate hand.
+
+    For example:
+        substitute_hand({'h':1, 'e':1, 'l':2, 'o':1}, 'l')
+    might return:
+        {'h':1, 'e':1, 'o':1, 'x':2} -> if the new letter is 'x'
+    The new letter should not be 'h', 'e', 'l', or 'o' since those letters were
+    already in the hand.
+    
+    hand: dictionary (string -> int)
+    letter: string
+    returns: dictionary (string -> int)
+    """
+    new_hand = hand
+    if hand[letter] > 0:
+        num_letter = hand[letter]
+        del(new_hand[letter])
+        all_letters = (list('qwertyuiopasdfghjklzxcvbnm'))
+        for key in hand.keys():
+            if hand[key] > 0 and key != '*':
+                all_letters.remove(key)
+        chosen_letter = random.choice(all_letters)
+        new_hand[chosen_letter] = new_hand.get(chosen_letter,0) + num_letter
+    return new_hand
+hand = {'a':1, 'c':1, 'f':3, 'i':1, '*':1, 't':1, 'x':1}
+print(substitute_hand(hand,'f'))
