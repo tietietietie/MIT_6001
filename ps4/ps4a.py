@@ -22,19 +22,41 @@ def get_permutations(sequence):
     Note: depending on your implementation, you may return the permutations in
     a different order than what is listed here.
     '''
-
-    pass #delete this line and replace with your code here
+    length = len(sequence)
+    l_sequence = list(sequence)
+    permutations = []
+    if length == 1:
+        return l_sequence
+    else:
+        first_char = l_sequence[0]
+        l_subsequence = l_sequence
+        del(l_subsequence[0])
+        sub_sequence = ''.join(l_subsequence)
+        sub_permutations = get_permutations(sub_sequence)
+        for sub_permutation in sub_permutations:
+            l_permutation = []
+            for i in range(length):
+                l_permutation.append('*')
+            for i in range(length):
+                l_permutation[i] = first_char
+                for j in range(i):
+                    l_permutation[j] = sub_permutation[j]
+                for j in range(i+1,length):
+                    l_permutation[j] = sub_permutation[j-1]
+                permutations.append(''.join(l_permutation))
+        return permutations 
 
 if __name__ == '__main__':
-#    #EXAMPLE
+   #EXAMPLE
 #    example_input = 'abc'
 #    print('Input:', example_input)
 #    print('Expected Output:', ['abc', 'acb', 'bac', 'bca', 'cab', 'cba'])
 #    print('Actual Output:', get_permutations(example_input))
-    
-#    # Put three example test cases here (for your sanity, limit your inputs
-#    to be three characters or fewer as you will have n! permutations for a 
-#    sequence of length n)
 
-    pass #delete this line and replace with your code here
+    example_input = 'rat'
+    print('Input: ',example_input)
+    print('Expected Output: ',['rat','rta','art','atr','tra','tar'])
+    print('Actual Output: ',get_permutations(example_input))
+
+
 
