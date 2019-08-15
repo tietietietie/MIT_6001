@@ -54,7 +54,25 @@ def process(url):
 
 # Problem 1
 
-# TODO: NewsStory
+class NewsStory(object):
+    def __init__(self, guid, title, description, link, pubdate):
+        self.guid = guid
+        self.title = title
+        self.description = description
+        self.link = link
+        self.pubdate = pubdate
+    def get_guid(self):
+        return self.guid
+    def get_title(self):
+        return self.title
+    def get_description(self):
+        return self.description
+    def get_link(self):
+        return self.link
+    def get_pubdate(self):
+        return self.pubdate
+
+
 
 
 #======================
@@ -73,13 +91,40 @@ class Trigger(object):
 # PHRASE TRIGGERS
 
 # Problem 2
-# TODO: PhraseTrigger
+class PhraseTrigger(Trigger):
+    def is_phrase_in(self, phrase, text):
+        phrase = phrase.lower()
+        phrasewords_list = phrase.split()
+        phrase_length = len(phrasewords_list)
+        text = text.lower()
+        for letter in text:
+            if letter not in string.ascii_lowercase:
+                text = text.replace(letter,' ',1)
+        textwords_list = text.split()
+        for word in textwords_list:
+            i = textwords_list.index(word)
+            if word == phrasewords_list[0] and i + phrase_length <= len(textwords_list):
+                try:
+                    textwords_sliced = textwords_list[i:i+phrase_length]
+                except:
+                    print("can't slice a list like this [:]")
+                if textwords_sliced == phrasewords_list:
+                    return True
+        return False
 
 # Problem 3
-# TODO: TitleTrigger
+class TitleTrigger(PhraseTrigger):
+    def __init__(self, phrase):
+        self.phrase = phrase
+    def evaluate(self,story):
+        return PhraseTrigger.is_phrase_in(self,self.phrase,story.get_title())
 
 # Problem 4
-# TODO: DescriptionTrigger
+class DescriptionTrigger(PhraseTrigger):
+    def __init__(self, phrase):
+        self.phrase = phrase
+    def evaluate(self,story):
+        return PhraseTrigger.is_phrase_in(self,self.phrase,story.get_description())        
 
 # TIME TRIGGERS
 
@@ -88,10 +133,25 @@ class Trigger(object):
 # Constructor:
 #        Input: Time has to be in EST and in the format of "%d %b %Y %H:%M:%S".
 #        Convert time from string to a datetime before saving it as an attribute.
-
+class TimeTrigger(Trigger):
+    def __init__(self,dt_string):
+        dt = datetime.strptime(dt_string,"%d %b %Y %H:%M:%S")
+        dt.replace(tzinfo=pytz.timezone("EST"))
+        self.dt = dt 
 # Problem 6
 # TODO: BeforeTrigger and AfterTrigger
+class BeforeTrigger(TimeTrigger):
+    def evaluate(self, story):
+        if self.dt < story.get_pubdate():
+            return False
+        return True
 
+class AfterTrigger(TimeTrigger):
+    def evaluate(self, story):
+        if self.dt < story.get_pubdate():
+            return True
+        return False
+        
 
 # COMPOSITE TRIGGERS
 
