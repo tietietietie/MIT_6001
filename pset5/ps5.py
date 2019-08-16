@@ -240,19 +240,23 @@ def read_trigger_config(filename):
     # line is the list of lines that you need to parse and for which you need
     # to build triggers
     list_triggers = []
+    dict_stored_triggers = {}
     dict_triggers = {'TITLE':TitleTrigger, 'DESCRIPTION':DescriptionTrigger, 
     'AFTER':AfterTrigger, 'BEFORE':BeforeTrigger, 'NOT':NotTrigger, 'AND':AndTrigger, 
     'OR':OrTrigger}
     for line in lines:
         line_words = line.split(',')
         if line_words[0] != 'ADD':
-            if len(line_words) == 3:
-                line_words[0] = dict_triggers[line_words[1]](line_words[2])
+            if len(line_words) == 3 and line_words[1] != 'NOT':
+                t = dict_triggers[line_words[1]](line_words[2])
+            if line_words[1] == 'NOT':
+                t = dict_triggers[line_words[1]](dict_stored_triggers[line_words[2]])
             if len(line_words) == 4:
-                line_words[0] = dict_triggers[line_words[1]](line_words[2],line_words[3])
+                t = dict_triggers[line_words[1]](dict_stored_triggers[line_words[2]],dict_stored_triggers[line_words[3]])
+            dict_stored_triggers[line_words[0]] = t
         else:
             for i in range(1, len(line_words)):
-                list_triggers.append(line_words[i])
+                list_triggers.append(dict_stored_triggers[line_words[i]])
     return list_triggers
                
 
@@ -309,8 +313,7 @@ def main_thread(master):
             # Get stories from Google's Top Stories RSS news feed
             stories = process("http://news.google.com/news?output=rss")
 
-            # Get stories from Yahoo's Top Stories RSS news feed
-            stories.extend(process("http://news.yahoo.com/rss/topstories"))
+
 
             stories = filter_stories(stories, triggerlist)
 
