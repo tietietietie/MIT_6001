@@ -206,7 +206,13 @@ def filter_stories(stories, triggerlist):
     # TODO: Problem 10
     # This is a placeholder
     # (we're just returning all the stories, with no filtering)
-    return stories
+    list_filter_stories = []
+    for story in stories:
+        for trigger in triggerlist:
+            if trigger.evaluate(story):
+                list_filter_stories.append(story)
+                break
+    return list_filter_stories
 
 
 
@@ -233,8 +239,24 @@ def read_trigger_config(filename):
     # TODO: Problem 11
     # line is the list of lines that you need to parse and for which you need
     # to build triggers
+    list_triggers = []
+    dict_triggers = {'TITLE':TitleTrigger, 'DESCRIPTION':DescriptionTrigger, 
+    'AFTER':AfterTrigger, 'BEFORE':BeforeTrigger, 'NOT':NotTrigger, 'AND':AndTrigger, 
+    'OR':OrTrigger}
+    for line in lines:
+        line_words = line.split(',')
+        if line_words[0] != 'ADD':
+            if len(line_words) == 3:
+                line_words[0] = dict_triggers[line_words[1]](line_words[2])
+            if len(line_words) == 4:
+                line_words[0] = dict_triggers[line_words[1]](line_words[2],line_words[3])
+        else:
+            for i in range(1, len(line_words)):
+                list_triggers.append(line_words[i])
+    return list_triggers
+               
 
-    print(lines) # for now, print it so you see what it contains!
+
 
 
 
@@ -252,7 +274,7 @@ def main_thread(master):
 
         # Problem 11
         # TODO: After implementing read_trigger_config, uncomment this line 
-        # triggerlist = read_trigger_config('triggers.txt')
+        triggerlist = read_trigger_config('triggers.txt')
         
         # HELPER CODE - you don't need to understand this!
         # Draws the popup window that displays the filtered stories
