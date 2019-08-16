@@ -136,18 +136,21 @@ class DescriptionTrigger(PhraseTrigger):
 class TimeTrigger(Trigger):
     def __init__(self,dt_string):
         dt = datetime.strptime(dt_string,"%d %b %Y %H:%M:%S")
-        dt.replace(tzinfo=pytz.timezone("EST"))
         self.dt = dt 
 # Problem 6
 # TODO: BeforeTrigger and AfterTrigger
 class BeforeTrigger(TimeTrigger):
     def evaluate(self, story):
+        if story.get_pubdate().tzinfo != None:
+            self.dt = self.dt.replace(tzinfo = pytz.timezone("EST"))            
         if self.dt < story.get_pubdate():
             return False
         return True
 
 class AfterTrigger(TimeTrigger):
     def evaluate(self, story):
+        if story.get_pubdate().tzinfo != None:
+            self.dt = self.dt.replace(tzinfo = pytz.timezone("EST"))            
         if self.dt < story.get_pubdate():
             return True
         return False
@@ -157,12 +160,36 @@ class AfterTrigger(TimeTrigger):
 
 # Problem 7
 # TODO: NotTrigger
+class NotTrigger(Trigger):
+    def __init__(self, t):
+        self.trigger = t
+    def evaluate(self, x):
+        result = not (self.trigger.evaluate(x))
+        return result
 
 # Problem 8
 # TODO: AndTrigger
+class AndTrigger(Trigger):
+    def __init__(self, t1, t2):
+        self.t1 = t1
+        self.t2 = t2
+    def evaluate(self, story):
+        if self.t1.evaluate(story) and self.t2.evaluate(story):
+            return True
+        else:
+            return False
 
 # Problem 9
 # TODO: OrTrigger
+class OrTrigger(Trigger):
+    def __init__(self, t1, t2):
+        self.t1 = t1
+        self.t2 = t2
+    def evaluate(self, story):
+        if self.t1.evaluate(story) or self.t2.evaluate(story):
+            return True
+        else:
+            return False
 
 
 #======================
