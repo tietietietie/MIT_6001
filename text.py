@@ -168,5 +168,18 @@ def read_trigger_config(filename):
 
     print(lines) # for now, print it so you see what it contains!
 
-filename = "triggers.txt"
-read_trigger_config(filename)  #为什么找不到文件啊？
+# filename = "triggers.txt"
+# read_trigger_config(filename)  #为什么找不到文件啊？ A:因为文件相对路径设置不对
+
+####################
+#测试raise exception
+####################
+try:
+  a = int(input("输入分母"))
+  b = int(input("输入分子"))
+  c = a/b
+except ValueError:
+  print('Could not convert to a number')
+except:
+  raise ZeroDivisionError('b can not be zero')
+print('can be continued')
